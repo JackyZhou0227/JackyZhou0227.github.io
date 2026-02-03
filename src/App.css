@@ -9,8 +9,15 @@
 
 /* 闪烁动画 */
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
 }
 
 .blink {
@@ -19,8 +26,15 @@
 
 /* 悬浮效果 */
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 .float {
@@ -29,8 +43,15 @@
 
 /* 霓虹灯效果 */
 @keyframes neon {
-  0%, 100% { text-shadow: 0 0 5px #64ffda, 0 0 10px #64ffda; }
-  50% { text-shadow: 0 0 20px #64ffda, 0 0 30px #64ffda; }
+
+  0%,
+  100% {
+    text-shadow: 0 0 5px #64ffda, 0 0 10px #64ffda;
+  }
+
+  50% {
+    text-shadow: 0 0 20px #64ffda, 0 0 30px #64ffda;
+  }
 }
 
 .neon {
@@ -50,7 +71,7 @@
 /* 网格背景 */
 .grid-bg {
   background-image: linear-gradient(rgba(100, 255, 218, 0.1) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(100, 255, 218, 0.1) 1px, transparent 1px);
+    linear-gradient(90deg, rgba(100, 255, 218, 0.1) 1px, transparent 1px);
   background-size: 40px 40px;
   background-position: center center;
 }

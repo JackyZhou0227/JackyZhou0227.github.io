@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaEnvelope } from 'react-icons/fa'
 import avatarImg from '../../assets/avatar.jpg'
@@ -12,6 +12,10 @@ import tiktokIcon from '../../assets/icons/social-media/tiktok.svg'
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const [copySuccess, setCopySuccess] = useState(false)
+  const [hoveredIndex, setHoveredIndex] = useState(null)
+  const navRef = useRef(null)
+  const activeBubbleRef = useRef(null)
+  const hoverBubbleRef = useRef(null)
 
   // 从 PaginationContext 获取状态和方法
   let pagination = null
@@ -49,6 +53,63 @@ const Navbar = () => {
       goToPage(index)
     }
   }
+
+  // 更新气泡位置的函数
+  const updateBubblePosition = (skipTransition = false) => {
+    if (!navRef.current) return
+
+    const links = navRef.current.querySelectorAll('button')
+    const activeLink = links[currentPage]
+    const hoveredLink = hoveredIndex !== null ? links[hoveredIndex] : null
+
+    if (activeLink && activeBubbleRef.current) {
+      const rect = activeLink.getBoundingClientRect()
+      const navRect = navRef.current.getBoundingClientRect()
+
+      if (skipTransition) {
+        activeBubbleRef.current.style.transition = 'none'
+      }
+
+      activeBubbleRef.current.style.left = `${rect.left - navRect.left}px`
+      activeBubbleRef.current.style.top = `${rect.top - navRect.top}px`
+      activeBubbleRef.current.style.width = `${rect.width}px`
+      activeBubbleRef.current.style.height = `${rect.height}px`
+
+      if (skipTransition) {
+        // 强制重绘后恢复过渡
+        activeBubbleRef.current.offsetHeight
+        activeBubbleRef.current.style.transition = 'all 0.2s ease-out'
+      }
+    }
+
+    if (hoveredLink && hoverBubbleRef.current) {
+      const rect = hoveredLink.getBoundingClientRect()
+      const navRect = navRef.current.getBoundingClientRect()
+      hoverBubbleRef.current.style.left = `${rect.left - navRect.left}px`
+      hoverBubbleRef.current.style.top = `${rect.top - navRect.top}px`
+      hoverBubbleRef.current.style.width = `${rect.width}px`
+      hoverBubbleRef.current.style.height = `${rect.height}px`
+      hoverBubbleRef.current.style.opacity = '1'
+    } else if (hoverBubbleRef.current) {
+      hoverBubbleRef.current.style.opacity = '0'
+    }
+  }
+
+  // 监听 currentPage 和 hoveredIndex 变化
+  useEffect(() => {
+    updateBubblePosition()
+    window.addEventListener('resize', () => updateBubblePosition())
+    return () => window.removeEventListener('resize', () => updateBubblePosition())
+  }, [currentPage, hoveredIndex])
+
+  // 初始化时立即设置气泡位置（无动画）
+  useEffect(() => {
+    // 使用 setTimeout 确保 DOM 已渲染
+    const timer = setTimeout(() => {
+      updateBubblePosition(true)
+    }, 0)
+    return () => clearTimeout(timer)
+  }, [])
 
   // 复制邮箱
   const handleCopyEmail = () => {
@@ -116,29 +177,41 @@ const Navbar = () => {
 
         <div className="flex items-center gap-4 md:gap-8">
           {/* 桌面导航 */}
-          <nav className="hidden md:block">
-            <ul className="flex space-x-8">
+          <nav className="hidden md:block relative" ref={navRef}>
+            {/* 气泡背景 */}
+            <div
+              ref={activeBubbleRef}
+              className="absolute pointer-events-none transition-all duration-200 ease-out rounded-full"
+              style={{
+                background: 'linear-gradient(180deg, rgba(100, 255, 218, 0.2), rgba(6, 182, 212, 0.15))',
+                boxShadow: 'inset 0 2px 7px rgba(100, 255, 218, 0.3), 0 0 15px rgba(6, 182, 212, 0.2)',
+                zIndex: 2,
+              }}
+            />
+            <div
+              ref={hoverBubbleRef}
+              className="absolute pointer-events-none transition-all duration-200 ease-out rounded-full opacity-0"
+              style={{
+                background: 'linear-gradient(180deg, rgba(100, 255, 218, 0.1), rgba(6, 182, 212, 0.05))',
+                boxShadow: 'inset 0 2px 7px rgba(100, 255, 218, 0.15)',
+                zIndex: 1,
+              }}
+            />
+            <ul className="flex relative" style={{ padding: '4px' }}>
               {navLinks.map((link, index) => (
-                <motion.li
-                  key={link.id}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
+                <li key={link.id}>
                   <button
                     onClick={() => handleNavClick(link.index)}
-                    className={`relative font-mono text-sm hover:text-secondary transition-colors duration-300 ${currentPage === link.index ? 'text-secondary' : 'text-light'}`}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    className={`relative z-10 font-mono text-sm transition-colors duration-300 px-6 py-2 ${currentPage === link.index
+                      ? 'text-secondary font-bold drop-shadow-[0_0_8px_rgba(100,255,218,0.8)]'
+                      : 'text-light/80 hover:text-light'
+                      }`}
                   >
                     {link.name}
-                    {currentPage === link.index && (
-                      <motion.span
-                        className="absolute -bottom-1 left-0 w-full h-0.5 bg-secondary"
-                        layoutId="navbar-underline"
-                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                      />
-                    )}
                   </button>
-                </motion.li>
+                </li>
               ))}
             </ul>
           </nav>
