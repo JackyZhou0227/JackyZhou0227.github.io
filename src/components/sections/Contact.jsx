@@ -5,7 +5,7 @@ import ElectricStrings from '../3d/ElectricStrings'
 
 const Contact = () => {
   return (
-    <section id="contact" className="section bg-dark sticky top-0 h-screen z-40 overflow-hidden border-t border-cyan-500/30 shadow-[0_-5px_30px_rgba(6,182,212,0.4)]">
+    <section id="contact" className="section bg-dark h-screen overflow-hidden">
       {/* 背景特效 */}
       <ElectricStrings />
 

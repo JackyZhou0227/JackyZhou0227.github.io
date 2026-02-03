@@ -171,7 +171,7 @@ const SciFiFrame = ({ children, className = "" }) => {
 
 const Hero = () => {
   return (
-    <section id="hero" className="sticky top-0 h-screen z-0 flex items-center overflow-hidden select-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#112240] via-[#0a192f] to-[#020c1b]">
+    <section id="hero" className="h-screen flex items-center overflow-hidden select-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#112240] via-[#0a192f] to-[#020c1b]">
       {/* 3D Background - Static Stars */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <Canvas camera={{ position: [0, 0, 1] }}>
@@ -246,14 +246,6 @@ const Hero = () => {
         {/* Right side spacer for 3D element */}
         <div className="hidden lg:block h-full"></div>
       </div>
-
-      {/* 滚动指示器 */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="scroll-indicator"
-      />
     </section>
   )
 }

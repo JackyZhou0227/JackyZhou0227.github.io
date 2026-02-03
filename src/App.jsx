@@ -1,11 +1,9 @@
-import { useState, useEffect, Suspense } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa'
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import './App.css'
 
-// Layout Components
-import Navbar from './components/layout/Navbar'
-import Footer from './components/layout/Footer'
+// Pagination System
+import PageContainer from './components/pagination/PageContainer'
 
 // Section Components
 import Hero from './components/sections/Hero'
@@ -16,7 +14,6 @@ import Contact from './components/sections/Contact'
 
 function App() {
   const [loading, setLoading] = useState(true)
-  const [activeSection, setActiveSection] = useState('hero')
 
   useEffect(() => {
     // 模拟加载过程
@@ -25,27 +22,6 @@ function App() {
     }, 2000)
 
     return () => clearTimeout(timer)
-  }, [])
-
-  // 监听滚动以更新当前活动部分
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = document.querySelectorAll('section')
-      const scrollPosition = window.scrollY + 300
-
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop
-        const sectionHeight = section.offsetHeight
-        const sectionId = section.getAttribute('id')
-
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-          setActiveSection(sectionId)
-        }
-      })
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   if (loading) {
@@ -74,27 +50,13 @@ function App() {
   }
 
   return (
-    <div className="relative min-h-screen bg-primary overflow-x-hidden">
-
-      {/* Content */}
-      <div className="relative z-10">
-        <Navbar activeSection={activeSection} />
-
-        <main>
-          <Hero />
-          <About />
-          <Projects />
-          <Skills />
-          <Contact />
-        </main>
-
-        <Footer />
-
-
-
-
-      </div>
-    </div>
+    <PageContainer>
+      <Hero />
+      <About />
+      <Projects />
+      <Skills />
+      <Contact />
+    </PageContainer>
   )
 }
 

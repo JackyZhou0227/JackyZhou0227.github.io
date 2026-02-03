@@ -6,7 +6,7 @@ import astronautIcon from '../../assets/icons/universe/astronaut.svg'
 
 const About = () => {
   return (
-    <section id="about" className="section bg-primary sticky top-0 h-screen z-10 overflow-y-auto overflow-x-hidden border-t border-cyan-500/30 shadow-[0_-5px_30px_rgba(6,182,212,0.4)] flex items-center">
+    <section id="about" className="section bg-primary h-screen overflow-y-auto overflow-x-hidden flex items-center">
       {/* 背景网格 */}
       <div className="absolute inset-0 grid-bg opacity-20" />
 

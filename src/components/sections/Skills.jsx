@@ -69,7 +69,7 @@ const Skills = () => {
   const activeSkills = skillCategories.find(category => category.id === activeCategory)?.skills || []
 
   return (
-    <section id="skills" className="section bg-primary sticky top-0 h-screen z-30 overflow-y-auto overflow-x-hidden border-t border-cyan-500/30 shadow-[0_-5px_30px_rgba(6,182,212,0.4)]">
+    <section id="skills" className="section bg-primary h-screen overflow-y-auto overflow-x-hidden">
       {/* 背景装饰 */}
       <div className="absolute inset-0 grid-bg opacity-20" />
 

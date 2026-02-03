@@ -119,7 +119,7 @@ const Projects = () => {
   ]
 
   return (
-    <section id="projects" className="section bg-dark sticky top-0 h-screen z-20 flex flex-col overflow-hidden border-t border-cyan-500/30 shadow-[0_-5px_30px_rgba(6,182,212,0.4)]">
+    <section id="projects" className="section bg-dark h-screen flex flex-col overflow-hidden">
       {/* 背景装饰 */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
         <div className="absolute -top-40 -left-40 w-80 h-80 bg-secondary rounded-full filter blur-3xl"></div>
